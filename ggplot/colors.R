@@ -1,0 +1,7 @@
+darkGrey <- '#8c8c8c'
+lightGrey <- '#cccccc'
+yellow <- '#ffc425'
+orange <- '#f37735'
+blue <- '#00aedb'
+green <- '#00b159'
+red <- '#d11141'
