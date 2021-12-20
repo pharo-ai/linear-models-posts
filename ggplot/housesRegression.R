@@ -23,6 +23,6 @@ houses <- ggplot(data, aes(x=Area, y=Price)) +
 ggsave(
   '../img/houses.png',
   plot=houses,
-  width=20, height=20, units="cm",
-  scale=.7,
+  width=9, height=9, units="cm",
+  scale=1,
   dpi="retina")

@@ -19,3 +19,9 @@ We select top 50 houses into our datases, recording the value and price of each 
 You can see them visualized in the picture below.
 
 ![](img/houses.png)
+
+### Estimating the Price
+
+Intuitively, by looking at the data, we can understand what would be the good estimate of a house price.
+
+![](img/estimations.png)
