@@ -55,10 +55,12 @@ You can see this in the image below, which demonstrates three line estimates of 
 
 For a given set of parameters $k$ and $b$, the price estimation is calculated as
 
-$$y\hat = kx + b$$
+$$\hat y = kx + b$$
 
 For the dataset of $m$ houses, the MSE is calculated in the followimng way:
 
-$$MSE = \frac{1}{m}\sum_{i=1}^m (y\hat - y)^2$$
+$$MSE = \frac{1}{m}\sum_{i=1}^m (\hat y - y)^2$$
 
 ### Linear Regression: Finding the Best Line to Fit the Data
+
+![](img/mseParabolas.png)

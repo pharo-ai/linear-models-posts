@@ -17,7 +17,7 @@ mse <- function(func, data) {
     row <- data[i,]
     #prediction <- predict(model, row)[[1]]
     prediction <- func(row$Area)
-    error <- (prediction - row$Price) / 1000
+    error <- (prediction - row$Price)# / 1000
     sum <- sum + (error^2)
   }
   return (sum / nrow(data));
@@ -31,27 +31,9 @@ model <- lm(Price ~ Area, data)
 best.intercept <- model$coefficients[1][[1]]
 best.slope <- model$coefficients[2][[1]]
 
-slopes <- c(2000, 2100, 2200, 2300, 2400, 2500, 2600, 2700, 2800, 2900, 3000)
+slopes <- seq(1880, 3000, 20)
 
-houses <- ggplot(data, aes(x=Area, y=Price)) +
-  geom_point() +
-  labs(x="Area (sq. m)", y="Price (euros)") +
-  theme_Publication() +
-  theme(
-    aspect.ratio=1,
-    panel.grid.major=element_blank(),
-    text=element_text(family="Avenir"))
-
-for (slope in slopes) {
-  houses <- houses +
-    geom_abline(
-      intercept=best.intercept,
-      slope=slope,
-      color=line_color,
-      lwd=.8)
-}
-
-costs <- lapply(slopes, function(slope) {
+costs <- sapply(slopes, function(slope) {
   func <- line_func(slope, best.intercept)
   cost <- mse(func, data)
   return(cost);
@@ -61,6 +43,41 @@ df <- data.frame(
   Slope = slopes,
   Cost = costs)
 
-ggplot(df, aes(x=Slope, y=Cost)) +
-  geom_point()
+slope.mse <- ggplot(df, aes(x=Slope, y=Cost)) +
+  geom_line(color=line_color, lwd=.8) +
+  labs(x="Slope (parameter k)", y="Mean Squared Error (MSE)") +
+  theme_Publication() +
+  theme(
+    aspect.ratio=0.8,
+    panel.grid.major=element_blank(),
+    text=element_text(family="Avenir"))
 
+intercepts <- seq(70000, 92300, 100)
+
+costs <- sapply(intercepts, function(intercept) {
+  func <- line_func(best.slope, intercept)
+  cost <- mse(func, data)
+  return(cost);
+})
+
+df <- data.frame(
+  Intercept = intercepts,
+  Cost = costs)
+
+intercept.mse <- ggplot(df, aes(x=Intercept, y=Cost)) +
+  geom_line(color=line_color, lwd=.8) +
+  labs(x="Intercept (parameter b)", y="Mean Squared Error (MSE)") +
+  theme_Publication() +
+  theme(
+    aspect.ratio=0.8,
+    panel.grid.major=element_blank(),
+    text=element_text(family="Avenir"))
+
+result <- grid.arrange(arrangeGrob(slope.mse, intercept.mse, ncol=2))
+
+ggsave(
+  '../img/mseParabolas.png',
+  plot=result,
+  width=50, height=18, units="cm",
+  scale=.7,
+  dpi="retina")
