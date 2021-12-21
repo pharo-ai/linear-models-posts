@@ -24,5 +24,21 @@ ggsave(
   '../img/houses.png',
   plot=houses,
   width=9, height=9, units="cm",
-  scale=1,
+  scale=1.2,
+  dpi="retina")
+
+model <- lm(Price ~ Area, data)
+
+housesRegression <- houses +
+  geom_abline(
+   intercept=model$coefficients[1],
+   slope=model$coefficients[2],
+   color=line_color,
+   lwd=.8) 
+
+ggsave(
+  '../img/housesRegression.png',
+  plot=housesRegression,
+  width=9, height=9, units="cm",
+  scale=1.2,
   dpi="retina")
