@@ -1,4 +1,4 @@
-# Linear Regression
+# Understanding Linear Regression
 
 Linear regression is one of the most well-known and most commonly used machine learning algorithms.
 It allows us to learn the linear dependency between the input variables $x_1, \dots, x_n$ and the output variable $y$.
