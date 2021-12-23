@@ -89,7 +89,7 @@ In statistics and machine learning, normalization is the process which transform
 
 For example, we have a table that the Salaries that a person earns according to some criteria. The values of variable Years since PhD are in the range of `[1 .. 56]` and the salaries `[57,800 .. 231,545]`. If we plot the two variables we see:
 
-<img src="img/normalization_comparison.png"  width=700 height=400 alt="Source: https://blog.oleks.fr/normalization" align="middle">
+<img src="img/normalization_comparison.png"  width=650 height=350 alt="Source: https://blog.oleks.fr/normalization">
 
 So, the big difference between the range of the values can affect out model.
 
@@ -185,7 +185,7 @@ logisticRegression := AILogisticRegression
 	learningRate: 3
 	maxIterations: 5000.
 
-logisticRegression f~itX: xTrain y: yTrain.
+logisticRegression fitX: xTrain y: yTrain.
 yPredicted := logisticRegression predict: xTest.
 
 
