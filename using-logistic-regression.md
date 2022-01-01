@@ -1,6 +1,8 @@
 # Using Logistic Regression
 
-Write something here
+As described in the Logistic Regression post, Logistic regression is a machine algorithm that is useful for classifying variables that follow a linear distribution. Here, we are going to use the Logistic Regression Pharo implementation to solve a problem of determining if someone has or has not diabetes.
+
+We will use data from the [National Institute of Diabetes and Digestive and Kidney Diseases](https://www.kaggle.com/uciml/pima-indians-diabetes-database) to train the machine learning to be able to predict if someone has or not diabetes based in their physical condition.
 
 ## Table of Contents  
 - [Preprocessing the data](#Preprocessing-the-data)  
