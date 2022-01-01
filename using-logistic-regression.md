@@ -1,6 +1,6 @@
 # Using Logistic Regression
 
-As described in the Logistic Regression post, Logistic regression is a machine algorithm that is useful for classifying variables that follow a linear distribution. Here, we are going to use the Logistic Regression Pharo implementation to solve a problem of determining if someone has or has not diabetes.
+As described in the Logistic Regression post, Logistic regression is a machine algorithm that is useful for classifying variables that follow a linear distribution. Here, we are going to use the Logistic Regression Pharo implementation to determine if someone has or has not diabetes.
 
 We will use data from the [National Institute of Diabetes and Digestive and Kidney Diseases](https://www.kaggle.com/uciml/pima-indians-diabetes-database) to train the machine learning to be able to predict if someone has or not diabetes based in their physical condition.
 
@@ -13,8 +13,7 @@ We will use data from the [National Institute of Diabetes and Digestive and Kidn
 
 ## [Preprocessing the data](#Preprocessing-the-data)
 
-In Pharo, we have a library for loading several dataset directly into Pharo as DataFrame objects. [Pharo Datasets](https://github.com/pharo-ai/Datasets). It contains the well-know examples like the [iris dataset](https://scikit-learn.org/stable/auto_examples/datasets/plot_iris_dataset.html) and other ones.
-Here we will use a dataset from the [National Institute of Diabetes and Digestive and Kidney Diseases](https://www.kaggle.com/uciml/pima-indians-diabetes-database) for predicting if a patient has or not diabetes.
+In Pharo, we have a library for loading several dataset directly into Pharo as DataFrame objects: [Pharo Datasets](https://github.com/pharo-ai/Datasets). It contains the well-know examples like the [iris dataset](https://scikit-learn.org/stable/auto_examples/datasets/plot_iris_dataset.html) and several other ones. Feel free to inspect the available datasets. Here we will use a dataset from the [National Institute of Diabetes and Digestive and Kidney Diseases](https://www.kaggle.com/uciml/pima-indians-diabetes-database) for predicting if a patient has or not diabetes.
 
 First we need to install the library using the [Metacello script](https://github.com/pharo-ai/Datasets) available in the README. The method `loadXXX` will return a [DataFrame object](https://github.com/PolyMathOrg/DataFrame).
 
@@ -25,7 +24,7 @@ First we need to install the library using the [Metacello script](https://github
 diabetesPima := AIDatasets loadDiabetesPima.
 ```
 
-Now, for training our model, we need at least two partitions of the data set: one for training and the other for measuring the accurancy of the model. Also in Pharo, we have a small library to help you with that task! [Random Partitioner](https://github.com/pharo-ai/random-partitioner). First random shuffle the data and then partitions the data to the given proportions. This is included by default when you load the [Pharo Datasets](https://github.com/pharo-ai/Datasets) or [Pharo DataFrame](https://github.com/PolyMathOrg/DataFrame). So, you do not need to install it again. We will partiton our data into two sets: training and test with a proportion of 75%-25%.
+Now, for training our model, we need at least two partitions of the dataset: one for training and the other for measuring the accurancy of the model. Also in Pharo, we have a small library to help you with that task! [Random Partitioner](https://github.com/pharo-ai/random-partitioner). The library first random shuffle the data and then partition it with the given proportions. This library is already included by default when you load the [Pharo Datasets](https://github.com/pharo-ai/Datasets) or [Pharo DataFrame](https://github.com/PolyMathOrg/DataFrame). So, you do not need to install it again. We will partiton our data into two sets: training and test with a proportion of 75%-25%.
 
 ```st
 "Dividing into test and training"
@@ -37,7 +36,7 @@ diabetesPimaTestDF := subsets second.
 
 As a next step, we can separate the features between X and Y. That means: into the independent variables `X` and the dependent variable `Y`. As we have the data loaded in a DataFrame object, we can select the desire columns.
 
-If we inspect the variable `diabetesPima columnNames` we will see: `an OrderedCollection('Pregnancies' 'Glucose' 'BloodPressure' 'SkinThickness' 'Insulin' 'BMI' 'DiabetesPedigreeFunction' 'Age' 'Outcome')`. Where `Outcome` is the dependent variable and all the rest are the independent ones.
+If we inspect `diabetesPima columnNames` we will see all the columns that the data has: `('Pregnancies' 'Glucose' 'BloodPressure' 'SkinThickness' 'Insulin' 'BMI' 'DiabetesPedigreeFunction' 'Age' 'Outcome')`. Where `Outcome` is the dependent variable and all the rest are the independent ones.
 
 The method `DataFrame>>columns:` will return a new DataFrame with the specify columns.
 
@@ -56,7 +55,7 @@ Now we have everything that we need to start training our machine learning model
 
 ## [Training the machine learning model](#Training-the-machine-learning-model)
 
-The API for both the logistic and linear regression is the same. You can load the logistic regression in the [pharo-ai linear-models](https://github.com/pharo-ai/linear-models) repository.
+The API for both the logistic and linear regression is the same. You can load the logistic regression from the [pharo-ai linear-models](https://github.com/pharo-ai/linear-models) repository.
 
 The linear models (logistic and linear regression) accept only a `SequenceableCollection` (For now, we are working on making it compatible with DataFrame). We need to convert the DataFrame to an array. Which is quite easy, we only send the message `asArray` or `asArrayOfRows`.
 
@@ -83,7 +82,7 @@ yPredicted := logisticRegression predict: xTest.
 
 ## [About normalization](#About-normalization)
 
-If you try to run all the code that we wrote until now, you most likely saw an exception with the message: `The model is starting to diverge. Try setting up a smaller learning rate or normalizing your data.`. It is normal! Usually, a model starts to diverge when the data is not normalize or the learning rate is too high. In this case is because the data is not normalized.
+If you try to run all the code that we wrote until now, you most likely saw an exception with the message: `The model is starting to diverge. Try setting up a smaller learning rate or normalizing your data.` It is normal! Usually, a model starts to diverge when the data is not normalize or the learning rate is too high. In this case is because the data is not normalized.
 
 ### What is normalization?
 
@@ -96,7 +95,7 @@ For example, we have a table that the Salaries that a person earns according to 
 So, the big difference between the range of the values can affect out model.
 
 If you want to read more about normalization Oleks has a [nice blog post about it](https://blog.oleks.fr/normalization).
->Part of the test of this normalization part and the image were extracted from that post.
+>Part of the text for explaining normalization were extracted from that post.
 
 For normalizing our data, DataFrame has a simple API: we just call the `DataFrame >> normalized` method that returns a new DataFrame that has been normalized. This method uses the default normalizer that is the min max normalizer. If you want to use another one you can use the method `DataFrame >> normalized: aNormalizerClass` instead.
 
@@ -107,13 +106,13 @@ So, we just execute this part **before** partitioning the data.
 normalizedDF := diabetesPima normalized.
 ```
 
-Pay attention, in the partitioning part we need to use the `normalizedDF` variable instead of the `diabetesPima`.
+Pay attention, now, as we want to use the normalized data, in the partitioning part we need to use the `normalizedDF` variable instead of the `diabetesPima`.
 
 ```st
 subsets := partitioner split: normalizedDF withProportions: #(0.75 0.25).
 ```
 
-Now, if we train the model with the normalized data we will see that everything runs smoothly! Also, as all the data is in the range of [0, 1] we can use a bigger learning rate. We saw that with a learning rate of `3` the model converges faster and has the same accuracy.
+Now, if we train the model with the normalized data we will see that everything runs smoothly! Also, as all the data is in the range of [0, 1] we can use a bigger learning rate. We experimented and we saw that with a learning rate of `3` the model converges faster and has the same accuracy.
 
 ```st
 "Training the logistic regression model"
