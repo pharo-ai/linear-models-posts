@@ -152,10 +152,12 @@ The summary of all the workflow that we have done is:
 diabetesPima := AIDatasets loadDiabetesPima.
 
 
+"PREPROCESSING THE DATA"
 "Normalizing the data frames"
 normalizedDF := diabetesPima normalized.
 
 
+"SEPARATING THE DATA"
 "Dividing into test and training"
 partitioner := AIRandomPartitioner new.
 subsets := partitioner split: normalizedDF withProportions: #(0.75 0.25).
@@ -173,7 +175,7 @@ xTest := diabetesPimaTestDF columns: #('Pregnancies' 'Glucose' 'BloodPressure' '
 yTest := diabetesPimaTestDF column: 'Outcome'.
 
 
-"Converting the DataFrame into an array of arrays For using it in the linar model.
+"Converting the DataFrame into an array of arrays For using it in the linear model.
 For now, the linear model does not work on a DataFrame."
 xTrain := xTrain asArray.
 yTrain := yTrain asArray.
@@ -181,6 +183,7 @@ xTest := xTest asArray.
 yTest := yTest asArray.
 
 
+"TRAINING THE MACHINE LEARNING MODEL"
 "Training the logistic regression model"
 logisticRegression := AILogisticRegression
 	learningRate: 3
@@ -190,6 +193,7 @@ logisticRegression fitX: xTrain y: yTrain.
 yPredicted := logisticRegression predict: xTest.
 
 
+"COMPUTING METRICS"
 "Computing the accuracy of the logistic regression model"
 metric := AIAccuracyScore new.
 accuracy "0.7916666666666666" := (metric computeForActual: yTest predicted: yPredicted) asFloat.
