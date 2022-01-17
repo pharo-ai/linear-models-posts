@@ -143,7 +143,7 @@ Our model has a accuracy of 79%
 ## [Workflow summary](#Workflow-summary)
 
 You can run the following script in a Pharo image to get all the result that we discussed above.
-Don't forget to install the libraries!
+Do not forget to install the libraries!
 
 The summary of all the workflow that we have done is:
 
