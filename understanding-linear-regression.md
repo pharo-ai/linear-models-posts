@@ -32,7 +32,7 @@ If we draw the line through those points, it will give us the best estimation of
 
 <img src="img/housesRegression.png" width="500"/>
 
-Such line can be defined with a line equation: $y=kx+b$.
+Such line can be defined with a line equation: $\hat y=kx+b$.
 It allows us to estimate the output $y$ (in our case, the price) based on input value $x$, in 
 
 * Parameter $k$ is called the _"slope"_, it defines the angle at which the line is rotated.
@@ -46,21 +46,53 @@ To understand what is the best line (or the best price estimation), we need to d
 There are many ways to do that.
 One such metric is called the _mean squared error_ (MSE).
 
-For every house in our dataset, we calculate the _estimation error_ --- the difference between the price estimated by the line and the real price.
+For every house in our dataset, we calculate the _estimation error_ – the difference between the price estimated by the line and the real price.
+
+$$ e_i = \hat y_i - y_i $$
+
+($y_i$ is the real price of the $i^{th}$ house that was posted on Leboncoin, $\hat y_i$ is the price of that same house predicted by our line).
 
 The good line would have as small errors as possible.
 You can see this in the image below, which demonstrates three line estimates of the dataset: the bad line which makes large errors, the better line which makes smaller errors, and the best line which makes as little errors as possible.
 
 <img src="img/goodRegressionLine.png" width="1000"/>
 
-For a given set of parameters $k$ and $b$, the price estimation is calculated as
+Those errors can be negative, in which case they might cancel out when we sum them.
+To avoid this, we square the errors:
 
-$$\hat y = kx + b$$
+$$ e_i = (\hat y_i - y_i)^2 $$
 
-For the dataset of $m$ houses, the MSE is calculated in the followimng way:
+Now we sum all these squared errors and divide them by $m$ — the number of houses in our dataset:
 
-$$MSE = \frac{1}{m}\sum_{i=1}^m (\hat y - y)^2$$
+$$MSE = \frac{1}{m}\sum_{i=1}^m (\hat y_i - y_i)^2$$
+
+By finding the line that has the smallest MSE, we find the best model to predict the housing prices.
 
 ### Linear Regression: Finding the Best Line to Fit the Data
 
+We can expand the formula for MSE using the line equation $\hat y_i = kx_i + b$:
+
+$$ MSE = \frac{1}{m}\sum_{i=1}^m (kx_i + b - y_i)^2 $$
+
+To find the value of parameters $k$ and $b$ that minimize the MSE, we need to differentiate MSE with respect to those parameters.
+The derivative will tell us in which direction to go to minimize the error.
+This is not hard because, as we see in the picture below, MSE is a quadratic function (parabola) of both those parameters:
+
 <img src="img/mseParabolas.png" width="10000"/>
+
+$$ k := k - \alpha \frac{\partial}{\partial k} Cost(k, b) $$
+
+$$ b := b - \alpha \frac{\partial}{\partial b} Cost(k, b) $$
+
+In our case,
+
+$$ \frac{\partial}{\partial k} Cost(k,b) = \frac{2}{m} \sum_{i=1}^{m} (kx_i + b - y_i) x_i $$
+
+$$ \frac{\partial}{\partial b} Cost(k,b) = \frac{2}{m} \sum_{i=1}^{m} (kx_i + b - y_i) $$
+
+## Appendix
+
+(to be removed)
+
+$$ \frac{\partial}{\partial k} Cost(k,b) = \frac{\partial}{\partial k} \frac{1}{m} \sum_{i=1}^{m}(kx_i + b - y_i)^2 = \frac{1}{m} \frac{\partial}{\partial k} \sum_{i=1}^{m}(kx_i + b - y_i)^2 $$
+$$ = \frac{1}{m} \sum_{i=1}^{m} 2(kx_i + b - y_i) \frac{\partial}{\partial k} (kx_i + b - y_i) = \frac{2}{m} \sum_{i=1}^{m} (kx_i + b - y_i) x_i $$
