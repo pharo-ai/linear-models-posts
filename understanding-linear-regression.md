@@ -18,19 +18,19 @@ First, we go to [Leboncoin](https://www.leboncoin.fr/) and search for houses in 
 We select top 50 houses into our datases, recording the value and price of each house.
 You can see them visualized in the picture below.
 
-<img src="img/houses.png" width="600"/>
+<img src="img/houses.png" width="500"/>
 
 ### Estimating the Price
 
 When we need to estimate the price for a new house, the good strategy would be to look at the houses with the similar area.
 Intuitively, based on the data that we have collected, we can understand that the green points are better price estimations for the house with 55 sq.m than the red points.
 
-![](img/estimations.png)
+<img src="img/estimations.png" width="500"/>
 
 We can also see that the data follows a certain linear pattern.
 If we draw the line through those points, it will give us the best estimation of a house price based on its area.
 
-![](img/housesRegression.png)
+<img src="img/housesRegression.png" width="500"/>
 
 Such line can be defined with a line equation: $y=kx+b$.
 It allows us to estimate the output $y$ (in our case, the price) based on input value $x$, in 
@@ -51,7 +51,7 @@ For every house in our dataset, we calculate the _estimation error_ --- the diff
 The good line would have as small errors as possible.
 You can see this in the image below, which demonstrates three line estimates of the dataset: the bad line which makes large errors, the better line which makes smaller errors, and the best line which makes as little errors as possible.
 
-![](img/goodRegressionLine.png)
+<img src="img/goodRegressionLine.png" width="1000"/>
 
 For a given set of parameters $k$ and $b$, the price estimation is calculated as
 
@@ -63,4 +63,4 @@ $$MSE = \frac{1}{m}\sum_{i=1}^m (\hat y - y)^2$$
 
 ### Linear Regression: Finding the Best Line to Fit the Data
 
-![](img/mseParabolas.png)
+<img src="img/mseParabolas.png" width="10000"/>
