@@ -4,6 +4,8 @@ As described in the Logistic Regression post, Logistic regression is a machine a
 
 We will use data from the [National Institute of Diabetes and Digestive and Kidney Diseases](https://www.kaggle.com/uciml/pima-indians-diabetes-database) to train the machine learning to be able to predict if someone has or not diabetes based in their physical condition.
 
+"INCLUDE THE PREDICTION OF THE DIABETES IN THE CONCLUSION..."
+
 ## Table of Contents  
 - [Preprocessing the data](#Preprocessing-the-data)  
 - [Training the machine learning model](#Training-the-machine-learning-model)
@@ -24,7 +26,7 @@ First we need to install the library using the [Metacello script](https://github
 diabetesPima := AIDatasets loadDiabetesPima.
 ```
 
-Now, for training our model, we need at least two partitions of the dataset: one for training and the other for measuring the accurancy of the model. Also in Pharo, we have a small library to help you with that task! [Random Partitioner](https://github.com/pharo-ai/random-partitioner). The library first random shuffle the data and then partition it with the given proportions. This library is already included by default when you load the [Pharo Datasets](https://github.com/pharo-ai/Datasets) or [Pharo DataFrame](https://github.com/PolyMathOrg/DataFrame). So, you do not need to install it again. We will partiton our data into two sets: training and test with a proportion of 75%-25%.
+Now, for training our model, we need at least two partitions of the dataset: one for training and the other for measuring the accuracy of the model. Also in Pharo, we have a small library to help you with that task! [Random Partitioner](https://github.com/pharo-ai/random-partitioner). The library first random shuffle the data and then partition it with the given proportions. This library is already included by default when you load the [Pharo Datasets](https://github.com/pharo-ai/Datasets) or [Pharo DataFrame](https://github.com/PolyMathOrg/DataFrame). So, you do not need to install it again. We will partition our data into two sets: training and test with a proportion of 75%-25%.
 
 ```st
 "Dividing into test and training"
@@ -62,9 +64,10 @@ The linear models (logistic and linear regression) accept only a `SequenceableCo
 ```st
 "Converting the DataFrame into an array of arrays For using it in the linar model.
 For now, the linear model does not work on a DataFrame."
-xTrain := xTrain asArray.
+xTrain := xTrain asArrayOfRows.
 yTrain := yTrain asArray.
-xTest := xTest asArray.
+
+xTest := xTest asArrayOfRows.
 yTest := yTest asArray.
 ```
 
@@ -80,9 +83,9 @@ logisticRegression fitX: xTrain y: yTrain.
 yPredicted := logisticRegression predict: xTest.
 ```
 
-## [About normalization](#About-normalization)
-
 If you try to run all the code that we wrote until now, you most likely saw an exception with the message: `The model is starting to diverge. Try setting up a smaller learning rate or normalizing your data.` It is normal! Usually, a model starts to diverge when the data is not normalize or the learning rate is too high. In this case is because the data is not normalized.
+
+## [About normalization](#About-normalization)
 
 ### What is normalization?
 
@@ -177,9 +180,10 @@ yTest := diabetesPimaTestDF column: 'Outcome'.
 
 "Converting the DataFrame into an array of arrays For using it in the linear model.
 For now, the linear model does not work on a DataFrame."
-xTrain := xTrain asArray.
+xTrain := xTrain asArrayOfRows.
 yTrain := yTrain asArray.
-xTest := xTest asArray.
+
+xTest := xTest asArrayOfRows.
 yTest := yTest asArray.
 
 

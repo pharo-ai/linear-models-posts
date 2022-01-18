@@ -18,7 +18,7 @@ First, we go to [Leboncoin](https://www.leboncoin.fr/) and search for houses in 
 We select top 50 houses into our datases, recording the value and price of each house.
 You can see them visualized in the picture below.
 
-![](img/houses.png)
+<img src="img/houses.png" width="600"/>
 
 ### Estimating the Price
 

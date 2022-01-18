@@ -73,9 +73,10 @@ Finally, as our linear regression model only accepts array and not DataFrame obj
 ```st
 "Converting the DataFrame into an array of arrays For using it in the linear model.
 For now, the linear model does not work on a DataFrame."
-xTrain := xTrain asArray.
+xTrain := xTrain asArrayOfRows.
 yTrain := yTrain asArray.
-xTest := xTest asArray.
+
+xTest := xTest asArrayOfRows.
 yTest := yTest asArray.
 ```
 
@@ -122,7 +123,7 @@ metric := AIR2Score new.
 r2Score "0.945929126485175" := (metric computeForActual: yTest predicted: yPredicted) asFloat.
 ```
 
-We obtained a 94% as a coefficient of correlation which is quite acceptable.
+We obtained a 94% as a coefficient of determination "STATE OF THE ART".
 
 ## [Workflow summary](#Workflow-summary)
 
@@ -169,9 +170,10 @@ yTest := irisTestDF column: 'species'.
 
 "Converting the DataFrame into an array of arrays For using it in the linear model.
 For now, the linear model does not work on a DataFrame."
-xTrain := xTrain asArray.
+xTrain := xTrain asArrayOfRows.
 yTrain := yTrain asArray.
-xTest := xTest asArray.
+
+xTest := xTest asArrayOfRows.
 yTest := yTest asArray.
 
 
