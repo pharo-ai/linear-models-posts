@@ -80,6 +80,12 @@ This is not hard because, as we see in the picture below, MSE is a quadratic fun
 
 <img src="img/mseParabolas.png" width="10000"/>
 
+<img src="img/OptimalValue.png" width="500"/>
+
+<img src="img/GradientDescent.png" width="500"/>
+
+<img src="img/LearningRate.png" width="1000"/>
+
 $$ k := k - \alpha \frac{\partial}{\partial k} Cost(k, b) $$
 
 $$ b := b - \alpha \frac{\partial}{\partial b} Cost(k, b) $$

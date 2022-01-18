@@ -75,9 +75,15 @@ intercept.mse <- ggplot(df, aes(x=Intercept, y=Cost)) +
 
 result <- grid.arrange(arrangeGrob(slope.mse, intercept.mse, ncol=2))
 
+slope.cost <- slope.mse +
+  labs(x="Intercept (parameter b)", y="Cost") +
+  theme(
+    axis.ticks = element_blank(),
+    axis.text = element_blank())
+
 ggsave(
-  '../img/mseParabolas.png',
-  plot=result,
-  width=50, height=18, units="cm",
+  '../img/costSlopeParabola.png',
+  plot=slope.cost,
+  width=18, height=18, units="cm",
   scale=.7,
   dpi="retina")
