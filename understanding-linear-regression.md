@@ -7,7 +7,7 @@ Then we can use the trained model to predict the previously unseen values of y.
 ## Simple Example: Predicting the Price of a House Based on its Area
 
 We start with the simple example of estimating the price of a house that is put on sale.
-In practice, many factors can influence the price: area, number of rooms, floor, distance from the city center, neighbourhood, distance from the metro, market economy, etc.
+In practice, many factors can influence the price: area, number of rooms, floor, distance from the city center, neighborhood, distance from the metro, market economy, etc.
 But in this simple example, we will be only considering one factor: the area of a house.
 We start with a trivial assumption: houses with small area are cheaper than houses with large area.
 Our goal is to find a mathematical expression that would allow us to estimate as well as we can the price of the house based only on its area.
@@ -15,7 +15,7 @@ Our goal is to find a mathematical expression that would allow us to estimate as
 ### Collecting the Data
 
 First, we go to [Leboncoin](https://www.leboncoin.fr/) and search for houses in Lille.
-We select top 50 houses into our datases, recording the value and price of each house.
+We select top 50 houses into our datasets, recording the value and price of each house.
 You can see them visualized in the picture below.
 
 <img src="img/houses.png" width="500"/>
@@ -33,10 +33,10 @@ If we draw the line through those points, it will give us the best estimation of
 <img src="img/housesRegression.png" width="500"/>
 
 Such line can be defined with a line equation: $\hat y=kx+b$.
-It allows us to estimate the output $y$ (in our case, the price) based on input value $x$, in 
+It allows us to estimate the output $y$ (in our case, the price) based on input value $x$, in:
 
 * Parameter $k$ is called the _"slope"_, it defines the angle at which the line is rotated.
-* Parameter $b$ is the intercept, it defines the distance from origin $(0,0)$ to the point $(0,y_0)$ at which the line intersects the y-axis (in other words, _"how high is the line raised from origin?"_).
+* Parameter $b$ is the intercept, it defines the distance from origin $(0,0)$ to the point $(0,y_0)$ at which the line intersects the y-axis (in other words,_"how high is the line raised from origin?"_).
 
 By finding the optimal values of those two parameters, we find the best line.
 
@@ -70,35 +70,47 @@ By finding the line that has the smallest MSE, we find the best model to predict
 
 ### Linear Regression: Finding the Best Line to Fit the Data
 
-We can expand the formula for MSE using the line equation $\hat y_i = kx_i + b$:
+The MSE will tell us how the model is performing. If the errors in the prediction are too high, the MSE function will have a high value that will indicate that the performance of the model is not good. In mathematical terms it is called the *cost function*. From now own, we will call the MSE error as the cost function.
 
-$$ MSE = \frac{1}{m}\sum_{i=1}^m (kx_i + b - y_i)^2 $$
+To find the optimal value of parameters $k$ and $b$ that minimize the mean squared error, we need to differentiate Cost function with respect to $k$ and $b$ as different equations.
+The result of the derivative will tell us in which direction to go to *climb the curve*. So, we need to take the negative value to go to the inverse direction.
 
-To find the value of parameters $k$ and $b$ that minimize the MSE, we need to differentiate MSE with respect to those parameters.
-The derivative will tell us in which direction to go to minimize the error.
-This is not hard because, as we see in the picture below, MSE is a quadratic function (parabola) of both those parameters:
+The Cost function is a quadratic function (parabola) for both those parameters:
 
 <img src="img/mseParabolas.png" width="10000"/>
 
+We can expand the formula for the Cost function using the line equation $\hat y_i = kx_i + b$:
+
+$$ Cost(k,b) = \frac{1}{m}\sum_{i=1}^m (kx_i + b - y_i)^2 $$
+
+Now, we take the partial derivatives of both $b$ and $k$ to find their optimal value. We will skip the steps of the derivation process.
+
+The partial derivatives of the MSE function are:
+
+* partial derivative of the MSE function with respect of $k$:
+$$ \frac{\partial}{\partial k} Cost(k,b) = \frac{2}{m} \sum_{i=1}^{m} (kx_i + b - y_i) x_i $$
+
+* partial derivative of the MSE function with respect of $b$:
+$$ \frac{\partial}{\partial b} Cost(k,b) = \frac{2}{m} \sum_{i=1}^{m} (kx_i + b - y_i) $$
+
+We want to reach the lowest point of the parabola to minimize the error. As we said, the partial derivatives help us to reach that point.
+
 <img src="img/OptimalValue.png" width="500"/>
+
+At the beginning, we will start at a random point of the parabola and with the derivative we will start moving.
+To reach the optimal point we should jump in the direction. But there is the risk of either jumping too much or too low. If we jump too much the model will diverge. If we jump too slow the training process will be too slow.
 
 <img src="img/GradientDescent.png" width="500"/>
 
-<img src="img/LearningRate.png" width="1000"/>
+To jump efficiently we will use a **learning rate**. It is a number that typically is between 1e-6 and 1.
+The learning rate will help us to control the speed of the jumping.
+
+As we said before, we need to use the negative of the partial derivative. The derivative will tell us where to climb the most the curve, the negative where to descend the most.
+
+After each iteration, we update both $b$ and $k$ values with the new best found point of the curve. In that way, we will by descending the curve step-by-step.
 
 $$ k := k - \alpha \frac{\partial}{\partial k} Cost(k, b) $$
 
 $$ b := b - \alpha \frac{\partial}{\partial b} Cost(k, b) $$
 
-In our case,
-
-$$ \frac{\partial}{\partial k} Cost(k,b) = \frac{2}{m} \sum_{i=1}^{m} (kx_i + b - y_i) x_i $$
-
-$$ \frac{\partial}{\partial b} Cost(k,b) = \frac{2}{m} \sum_{i=1}^{m} (kx_i + b - y_i) $$
-
-## Appendix
-
-(to be removed)
-
-$$ \frac{\partial}{\partial k} Cost(k,b) = \frac{\partial}{\partial k} \frac{1}{m} \sum_{i=1}^{m}(kx_i + b - y_i)^2 = \frac{1}{m} \frac{\partial}{\partial k} \sum_{i=1}^{m}(kx_i + b - y_i)^2 $$
-$$ = \frac{1}{m} \sum_{i=1}^{m} 2(kx_i + b - y_i) \frac{\partial}{\partial k} (kx_i + b - y_i) = \frac{2}{m} \sum_{i=1}^{m} (kx_i + b - y_i) x_i $$
+<img src="img/LearningRate.png" width="1000"/>
