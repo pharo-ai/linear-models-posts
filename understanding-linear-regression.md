@@ -85,12 +85,12 @@ $$ Cost(k,b) = \frac{1}{m}\sum_{i=1}^m (kx_i + b - y_i)^2 $$
 
 Now, we take the partial derivatives of both $b$ and $k$ to find their optimal value. We will skip the steps of the derivation process.
 
-The partial derivatives of the MSE function are:
+The partial derivatives of the Cost function are:
 
-* partial derivative of the MSE function with respect of $k$:
+* partial derivative of the Cost function with respect of $k$:
 $$ \frac{\partial}{\partial k} Cost(k,b) = \frac{2}{m} \sum_{i=1}^{m} (kx_i + b - y_i) x_i $$
 
-* partial derivative of the MSE function with respect of $b$:
+* partial derivative of the Cost function with respect of $b$:
 $$ \frac{\partial}{\partial b} Cost(k,b) = \frac{2}{m} \sum_{i=1}^{m} (kx_i + b - y_i) $$
 
 We want to reach the lowest point of the parabola to minimize the error. As we said, the partial derivatives help us to reach that point.
