@@ -4,14 +4,16 @@ Linear regression is a machine learning model that learns the linear dependencie
 
 Here we will use the renowned [Iris dataset](https://scikit-learn.org/stable/auto_examples/datasets/plot_iris_dataset.html) to train the linear regression model.
 
+<img src="img/workflow_linear_regression.png" width="900"/>
+
 ## Table of Contents  
 
 - [Preprocessing the data](#Preprocessing-the-data)
 - [Training the machine learning model](#Training-the-machine-learning-model)
-- [Measuring the accuracy and other metrics of the model](#Measuring-the-accuracy-and-other-metrics-of-the-model)
+- [Measuring the error and other metrics of the model](#Measuring-the-error-and-other-metrics-of-the-model)
 - [Workflow summary](#Workflow-summary)
 
-## [Preprocessing the data](#Preprocessing-the-data)
+## Preprocessing the data
 
 We will use [Pharo Datasets](https://github.com/pharo-ai/Datasets) to load the dataset into the Pharo image. The library contains several datasets ready to be loaded. Pharo Datasets will return a [Pharo DataFrame](https://github.com/PolyMathOrg/DataFrame) object. To install Pharo Datasets you only need to run the code sniped of the Metacello script available on the [README](https://github.com/pharo-ai/Datasets)
 
@@ -80,7 +82,7 @@ xTest := xTest asArrayOfRows.
 yTest := yTest asArray.
 ```
 
-## [Training the machine learning model](#Training-the-machine-learning-model)
+## Training the machine learning model
 
 We have everything that is needed to start training the linear regression model. We need to load the [Linear models library](https://github.com/pharo-ai/linear-models) from pharo-ai. That library contains both the logistic regression and linear regression algorithms.
 
@@ -101,7 +103,7 @@ Now we can make predictions for previously unseen values.
 yPredicted := linearRegression predict: xTest.
 ```
 
-## [Measuring the accuracy and other metrics of the model](#Measuring-the-accuracy-and-other-metrics-of-the-model)
+## Measuring the error and other metrics of the model
 
 We want to see how well our model is performing. In Pharo we also have a library for measuring the metrics of machine learning models: [Machine learning metrics!](https://github.com/pharo-ai/metrics). As usual, you will find the Metacello script for installing it on the README file.
 
@@ -125,7 +127,7 @@ r2Score "0.945929126485175" := (metric computeForActual: yTest predicted: yPredi
 
 We obtained a 94% as a coefficient of determination "STATE OF THE ART".
 
-## [Workflow summary](#Workflow-summary)
+## Workflow summary
 
 Here is the complete workflow of the exercise in which we have worked today. You can run everything in a Pharo Playground to play with the model.
 
