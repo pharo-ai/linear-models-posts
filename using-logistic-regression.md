@@ -1,19 +1,21 @@
 # Using Logistic Regression
 
-As described in the Logistic Regression post, Logistic regression is a machine algorithm that is useful for classifying variables that follow a linear distribution. Here, we are going to use the Logistic Regression Pharo implementation to determine if someone has or has not diabetes.
+Logistic regression is a classification machine algorithm for variables that follow a linear distribution. Here, we will to use the Logistic Regression Pharo implementation to determine if someone has or has not diabetes based on their physical condition.
 
-We will use data from the [National Institute of Diabetes and Digestive and Kidney Diseases](https://www.kaggle.com/uciml/pima-indians-diabetes-database) to train the machine learning to be able to predict if someone has or not diabetes based in their physical condition.
+We will use data from the [National Institute of Diabetes and Digestive and Kidney Diseases](https://www.kaggle.com/uciml/pima-indians-diabetes-database) to train the machine learning to be able to predict if someone has or not diabetes based in several parameters.
 
-"INCLUDE THE PREDICTION OF THE DIABETES IN THE CONCLUSION..."
+To make this exercise, we will follow a workflow. First, we need to do all the steps for preprocessing the data. After we have the data all set, we train the machine learning model to finally measure its accuracy.
+
+<img src="img/workflow_logistic_regression.png" width="900"/>
 
 ## Table of Contents  
-- [Preprocessing the data](#Preprocessing-the-data)  
-- [Training the machine learning model](#Training-the-machine-learning-model)
-- [About normalization](#About-normalization)
-- [Measuring the accuracy and other metrics of the model](#Measuring-the-accuracy-and-other-metrics-of-the-model)
-- [Workflow summary](#Workflow-summary)
+- [Preprocessing the data](#preprocessing-the-data)  
+- [Training the machine learning model](#training-the-machine-learning-model)
+- [About normalization](#about-normalization)
+- [Measuring the accuracy and other metrics of the model](#measuring-the-accuracy-and-other-metrics-of-the-model)
+- [Workflow summary](#workflow-summary)
 
-## [Preprocessing the data](#Preprocessing-the-data)
+## Preprocessing the data
 
 In Pharo, we have a library for loading several dataset directly into Pharo as DataFrame objects: [Pharo Datasets](https://github.com/pharo-ai/Datasets). It contains the well-know examples like the [iris dataset](https://scikit-learn.org/stable/auto_examples/datasets/plot_iris_dataset.html) and several other ones. Feel free to inspect the available datasets. Here we will use a dataset from the [National Institute of Diabetes and Digestive and Kidney Diseases](https://www.kaggle.com/uciml/pima-indians-diabetes-database) for predicting if a patient has or not diabetes.
 
@@ -55,7 +57,7 @@ yTest := diabetesPimaTestDF column: 'Outcome'.
 
 Now we have everything that we need to start training our machine learning model!
 
-## [Training the machine learning model](#Training-the-machine-learning-model)
+## Training the machine learning model
 
 The API for both the logistic and linear regression is the same. You can load the logistic regression from the [pharo-ai linear-models](https://github.com/pharo-ai/linear-models) repository.
 
@@ -80,12 +82,11 @@ logisticRegression := AILogisticRegression
 	maxIterations: 5000.
 
 logisticRegression fitX: xTrain y: yTrain.
-yPredicted := logisticRegression predict: xTest.
 ```
 
-If you try to run all the code that we wrote until now, you most likely saw an exception with the message: `The model is starting to diverge. Try setting up a smaller learning rate or normalizing your data.` It is normal! Usually, a model starts to diverge when the data is not normalize or the learning rate is too high. In this case is because the data is not normalized.
+If you try to run all the code that we wrote until now, you most likely saw an exception with the message: `The model is starting to diverge. Try setting up a smaller learning rate or normalizing your data.` It is normal! Usually, a model starts to diverge when the data is not normalized or the learning rate is too high. In this case is because the data is not normalized.
 
-## [About normalization](#About-normalization)
+## About normalization
 
 ### What is normalization?
 
@@ -97,7 +98,7 @@ For example, we have a table that the Salaries that a person earns according to 
 
 So, the big difference between the range of the values can affect out model.
 
-If you want to read more about normalization Oleks has a [nice blog post about it](https://blog.oleks.fr/normalization).
+If you want to read more about normalization Oleks has a [nice blog post](https://blog.oleks.fr/normalization) about it.
 >Part of the text for explaining normalization were extracted from that post.
 
 For normalizing our data, DataFrame has a simple API: we just call the `DataFrame >> normalized` method that returns a new DataFrame that has been normalized. This method uses the default normalizer that is the min max normalizer. If you want to use another one you can use the method `DataFrame >> normalized: aNormalizerClass` instead.
@@ -115,25 +116,34 @@ Pay attention, now, as we want to use the normalized data, in the partitioning p
 subsets := partitioner split: normalizedDF withProportions: #(0.75 0.25).
 ```
 
-Now, if we train the model with the normalized data we will see that everything runs smoothly! Also, as all the data is in the range of [0, 1] we can use a bigger learning rate. We experimented and we saw that with a learning rate of `3` the model converges faster and has the same accuracy.
+Now, if we train the model with the normalized data we will see that everything runs smoothly! Also, as all the data is in the range of [0, 1] we can use a bigger learning rate. We experimented and we saw that with a learning rate of `1` the model converges faster and has the same accuracy.
 
 ```st
 "Training the logistic regression model"
 logisticRegression := AILogisticRegression
-	learningRate: 3
+	learningRate: 1
 	maxIterations: 5000.
 
 logisticRegression fitX: xTrain y: yTrain.
+```
+
+## Measuring the accuracy and other metrics of the model
+
+We have our model trained. But now we want to see how our model it is performing.
+We will use statistical metrics to measure our model!
+
+Yes, in Pharo we also have a library for that also: [Machine learning metrics](https://github.com/pharo-ai/metrics).
+As usual, just install the library running the Metacello script from the README.
+
+Now, we want to make predictions with our model. We want to predict if someone has diabetes or not. We will use the `training dataset` which contains new data that the model has not seen before.
+
+For making a prediction we send the message `predict:` with the training dataset as an argument.
+
+```st
 yPredicted := logisticRegression predict: xTest.
 ```
 
-## [Measuring the accuracy and other metrics of the model](#Measuring-the-accuracy-and-other-metrics-of-the-model)
-
-We have our model trained, we have the predictions of our model. What do we do now?
-Well, we can use statistical metrics to measure our model!
-
-Yes, in Pharo we also have a library for that: [Machine learning metrics](https://github.com/pharo-ai/metrics).
-As usual, just install the library running the Metacello script from the README.
+Now, as we have also the real values for the data. We will measure what is the accuracy of the predictions.
 
 ```st
 "Computing the accuracy of the logistic regression model"
@@ -141,9 +151,9 @@ metric := AIAccuracyScore new.
 accuracy "0.7916666666666666" := (metric computeForActual: yTest predicted: yPredicted) asFloat.
 ```
 
-Our model has a accuracy of 79%
+As we can see, our model has a accuracy of **79%**. That means, the model predicted correctly if 8 out of 10 people have diabetes.
 
-## [Workflow summary](#Workflow-summary)
+## Workflow summary
 
 You can run the following script in a Pharo image to get all the result that we discussed above.
 Do not forget to install the libraries!
@@ -194,6 +204,7 @@ logisticRegression := AILogisticRegression
 	maxIterations: 5000.
 
 logisticRegression fitX: xTrain y: yTrain.
+
 yPredicted := logisticRegression predict: xTest.
 
 
