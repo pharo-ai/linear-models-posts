@@ -102,7 +102,7 @@ To reach the optimal point we should jump in the direction. But there is the ris
 
 <img src="img/GradientDescent.png" width="500"/>
 
-To jump efficiently we will use a **learning rate**. It is a number that typically is between 1e-6 and 1.
+To jump efficiently we will use a **learning rate** $  \alpha $ . It is a number that typically is between 1e-6 and 1.
 The learning rate will help us to control the speed of the jumping.
 
 As we said before, we need to use the negative of the partial derivative. The derivative will tell us where to climb the most the curve, the negative where to descend the most.
@@ -114,3 +114,5 @@ $$ k := k - \alpha \frac{\partial}{\partial k} Cost(k, b) $$
 $$ b := b - \alpha \frac{\partial}{\partial b} Cost(k, b) $$
 
 <img src="img/LearningRate.png" width="1000"/>
+
+After reaching the maximum number of iterations or if the model converged (If it found the optimal value), the model is able to predict what would be the output of new data.
