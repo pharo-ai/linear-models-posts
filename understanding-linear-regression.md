@@ -4,9 +4,18 @@ Linear regression is one of the most well-known and most commonly used machine l
 It allows us to learn the linear dependency between the input variables $x_1, \dots, x_n$ and the output variable $y$.
 Then we can use the trained model to predict the previously unseen values of y.
 
+**A note about math:** This chapter is intended primarily for software engineers who want to understand machine learning.
+It does not require deep mathematical expertise.
+That being said, linear regression is one of those topics that is hard to explain without plots or formulas.
+We tried to minimize the amount of math and keep it as simple as possible without sacrificing the information that is essential to understanding the algorithm.
+Here is a tip on how to read this chapter:
+
+- _Option 1: You want a simple explanation that requires no math._ Read everything except the section _"Linear Regression: Finding the Best Line to Fit the Data"_. Just consider that we find the best line through mathematical optimization.
+- _Option 2: You want to understand how things work inside._ Read everything including the abovementioned section. The only mathematical knowledge that it requires is the understanding of a [derivative](https://en.wikipedia.org/wiki/Derivative). It will give you a clear understanding of how do we train the model (and why there is no magic), what is the learning rate (and why is it important to choose it well). 
+
 ## Simple Example: Predicting the Price of a House Based on its Area
 
-We start with the simple example of estimating the price of a house that is put on sale.
+We start with a simple example of estimating the price of a house that is put on sale.
 In practice, many factors can influence the price: area, number of rooms, floor, distance from the city center, neighborhood, distance from the metro, market economy, etc.
 But in this simple example, we will be only considering one factor: the area of a house.
 We start with a trivial assumption: houses with small area are cheaper than houses with large area.
