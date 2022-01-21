@@ -2,5 +2,5 @@
 
 This is a temporary repository to collaborate on two blog posts:
 
-* [Linear Regression](linear-regression.md)
-* [Logistic Regression](logistic-regression.md)
+* [Linear Regression](using-linear-regression.md)
+* [Logistic Regression](using-logistic-regression.md)
