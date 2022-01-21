@@ -42,35 +42,48 @@ By finding the optimal values of those two parameters, we find the best line.
 
 ### Which Line is the Best?
 
-To understand what is the best line (or the best price estimation), we need to define a metric that will allow us to measure the goodness of fit for every given line.
-There are many ways to do that.
-One such metric is called the _mean squared error_ (MSE).
+To understand what is the best line (or the best price estimation), we need to select a function that will allow us to measure the goodness of fit for every given line (or the amount of errors that it makes).
+In machine learning such function is called the **cost function** --- it defines the cost of mistakes that a machine learning model makes when predicting the output on a given dataset.
 
-For every house in our dataset, we calculate the _estimation error_ – the difference between the price estimated by the line and the real price.
+The simple cost function that is commonly used for linear regression models is the _mean squared error_ (MSE).
+It is calculated in the following way.
+
+First, for every house in our dataset, we calculate the _estimation error_ – the difference between the price estimated by the line and the real price.
 
 $$ e_i = \hat y_i - y_i $$
 
 ($y_i$ is the real price of the $i^{th}$ house that was posted on Leboncoin, $\hat y_i$ is the price of that same house predicted by our line).
 
 The good line would have as small errors as possible.
-You can see this in the image below, which demonstrates three line estimates of the dataset: the bad line which makes large errors, the better line which makes smaller errors, and the best line which makes as little errors as possible.
+For a better intuitive understanding, take a look at the image below.
+It demonstrates three line estimates of the dataset: the bad line which makes large errors, the better line which makes smaller errors, and the best line which makes as little errors as possible.
 
 <img src="img/goodRegressionLine.png" width="1000"/>
 
-Those errors can be negative, in which case they might cancel out when we sum them.
-To avoid this, we square the errors:
+The mean squared error can now be calculated by raising each error to the power of 2 and finding the average:
 
-$$ e_i = (\hat y_i - y_i)^2 $$
+$$J(w) = \frac{1}{m}\sum_{i=1}^m (\hat y_i - y_i)^2$$
 
-Now we sum all these squared errors and divide them by $m$ — the number of houses in our dataset:
+($m$ is the number of houses in our dataset and $J(w)$ is the common denomination for the cost function in machine learning).
 
-$$MSE = \frac{1}{m}\sum_{i=1}^m (\hat y_i - y_i)^2$$
+_Why did we square the errors?_
+Because this ensures that they will not cancel out when we sum them.
+For example, look at the _"Bad Line"_ in the picture above.
+It has about the same amount of positive errors (when predicted value is greater than the real one) and negative errors (when predicted value is smaller).
+The sum of those values will be close to 0 (low cost = good line), although we can see that the line is clearly making bad predictions.
+Raising the errors to the power of 2 ensures that all of values are positive.
 
-By finding the line that has the smallest MSE, we find the best model to predict the housing prices.
+_OK, but why didn't we use absolute errors?_
+We can.
+Such cost function is called the Mean Absolute Error (MAE).
+However, as you will see in the next section, to find the best line, we will be calculating the derivative of the cost function.
+And derivating the square function $f(x) = x^2$ is much easier than the absolute function $f(x) = |x|$.
+
+By finding the line that gives us the smallest value cost function (the lowest mean squared error), we will find the best model to predict the housing prices.
 
 ### Linear Regression: Finding the Best Line to Fit the Data
 
-The MSE will tell us how the model is performing. If the errors in the prediction are too high, the MSE function will have a high value that will indicate that the performance of the model is not good. In mathematical terms it is called the *cost function*. From now own, we will call the MSE error as the cost function.
+The MSE will tell us how the model is performing. If the errors in the prediction are too high, the MSE function will have a high value that will indicate that the performance of the model is not good. In mathematical terms it is called the *cost function*. From now on, we will call the MSE error as the cost function.
 
 To find the optimal value of parameters $k$ and $b$ that minimize the mean squared error, we need to differentiate Cost function with respect to $k$ and $b$ as different equations.
 The result of the derivative will tell us in which direction to go to *climb the curve*. So, we need to take the negative value to go to the inverse direction.
