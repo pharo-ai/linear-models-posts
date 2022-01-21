@@ -8,6 +8,8 @@ To make this exercise, we will follow a workflow. First, we need to do all the s
 
 <img src="img/workflow_logistic_regression.png" width="900"/>
 
+This is the link of the linear regression exercise if you want to see it.
+
 ## Table of Contents  
 - [Preprocessing the data](#preprocessing-the-data)  
 - [Training the machine learning model](#training-the-machine-learning-model)

@@ -31,7 +31,7 @@ bostonHousingDataset := AIDatasets loadBostonHousing.
 
 Now, to train the machine model we need to separate the dataset into at least two parts: one for training and the other for testing it. We have already a library in Pharo that does that: [Random partitioner](https://github.com/pharo-ai/random-partitioner). It is already included be default if you load the Pharo Datasets library.
 
-We will separate besides the two sets: test and train, into X (independent, input variables) and Y (dependent, output variable).
+We will separate it into two sets: test and train. We need this to train the model and after to see how precisely the model is predicting.
 
 ```st
 "Dividing into test and training"
@@ -39,8 +39,11 @@ partitioner := AIRandomPartitioner new.
 subsets := partitioner split: bostonHousingDataset withProportions: #(0.75 0.25).
 bostonHousingTrainDF := subsets first.
 bostonHousingTestDF := subsets second.
+```
 
+Then, we need to obtain the X (independent, input variables) and Y (dependent, output variable) for each one of the test and training sets.
 
+```st
 "Separating between X and Y"
 bostonHousingTrainDF columnNames. "an OrderedCollection('CRIM' 'ZN' 'INDUS' 'CHAS' 'NOX' 'RM' 'AGE' 'DIS' 'RAD' 'TAX' 'PTRATIO' 'B' 'LSTAT' 'MEDV')"
 
@@ -51,7 +54,7 @@ xTest := bostonHousingTestDF columns: #('CRIM' 'ZN' 'INDUS' 'CHAS' 'NOX' 'RM' 'A
 yTest := bostonHousingTestDF column: 'MEDV'.
 ```
 
-Finally, as our linear regression model only accepts array and not DataFrame objects (for now!), we need to convert the DataFrame into an array. We can do that only sending the message `asArray`.
+Finally, as our linear regression model only accepts `SequenceableCollection` and not `DataFrame` objects (for now!), we need to convert the DataFrame into an array. We can do that only sending the message `asArray` or `asArrayOfRows`.
 
 ```st
 "Converting the DataFrame into an array of arrays For using it in the linear model.
@@ -65,9 +68,9 @@ yTest := yTest asArray.
 
 ## Training the machine learning model
 
-We have everything that is needed to start training the linear regression model. We need to load the [Linear models library](https://github.com/pharo-ai/linear-models) from pharo-ai. That library contains both the logistic regression and linear regression algorithms.
+We have everything that is needed to start training the linear regression model. We need to load the [Linear models library](https://github.com/pharo-ai/linear-models) from pharo-ai. That library contains both the logistic regression and linear regression algorithms. Both algorithms have the same API.
 
-We instantiate the model, set the learning rate and the max iterations (if not set the model will be the default values). After that, we train the model with the `trainX` and `trainY` collections that we have obtained.
+We instantiate the model, set the learning rate and the max iterations (if not set, the model will use the default values). After that, we train the model with the `trainX` and `trainY` collections that we have obtained.
 
 ```st
 "Training the linear regression model"
@@ -110,13 +113,13 @@ Pay attention, now, as we want to use the normalized data, in the partitioning p
 subsets := partitioner split: normalizedDF withProportions: #(0.75 0.25).
 ```
 
-Now we can make predictions for previously unseen values: estimate the price of a new house based in its parameters.
+## Measuring the performance of the model
+
+Now we can make predictions for previously unseen values: estimate the price of a new house based in its parameters. To make a prediction we need to send the message `predict:` to the linear regression model with the data that we want to predict as an argument.
 
 ```st
 yPredicted := linearRegression predict: xTest.
 ```
-
-## Measuring the performance of the model
 
 We want to see how well our model is performing. In Pharo we also have a library for measuring the metrics of machine learning models: [Machine learning metrics!](https://github.com/pharo-ai/metrics). As usual, you will find the Metacello script for installing it on the README file.
 
@@ -129,7 +132,7 @@ For a linear regression model we have several metrics implemented:
 - Max Error (AIMaxError)
 - and Explained Variance Score (AIExplainedVarianceScore)
 
-For this exercise will we use the R2 score metric (coefficient of determination). It is a coefficient that determinates the proportion of the variation in the dependent variable that is predictable from the independent variables. How close are the predictions to the real values.
+For this exercise will we use the R2 score metric (coefficient of determination). It is a coefficient that determinates the proportion of the variation in the dependent variable that is predictable from the independent variables. That means: How close are the predictions to the real values.
 
 If the value of r2 is 1 means that the model predicts perfectly.
 
@@ -140,13 +143,13 @@ metric := AIR2Score new.
 r2Score "0.7382841848355153" := (metric computeForActual: yTest predicted: yPredicted) asFloat.
 ```
 
-We obtained a 74% as a coefficient of determination.
+We have obtained a 74% as a coefficient of determination.
 
 ## Workflow summary
 
 Here is the complete workflow of the exercise in which we have worked today. You can run everything in a Pharo Playground to play with the model.
 
-Do not forget that you need to install the libraries for this to work.
+Do not forget that you need to install the libraries to this to work.
 
 ```st
 "Loading the dataset"
