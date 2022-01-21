@@ -92,6 +92,10 @@ By finding the line that gives us the smallest value cost function (the lowest m
 
 ### Linear Regression: Finding the Best Line to Fit the Data
 
+In this section, we explain how we can find the best line to fit the data with the help of mathematical optimization.
+Unlike the rest of the chapter, this section requires the basic knowledge of highschool calculus, more precisely, the understanding of a [derivative](https://en.wikipedia.org/wiki/Derivative).
+If you would like to skip all the math, feel free to jump directly to the next section (although we encourage you to give it a try).
+
 The MSE will tell us how the model is performing. If the errors in the prediction are too high, the MSE function will have a high value that will indicate that the performance of the model is not good. In mathematical terms it is called the *cost function*. From now on, we will call the MSE error as the cost function.
 
 To find the optimal value of parameters $k$ and $b$ that minimize the mean squared error, we need to differentiate Cost function with respect to $k$ and $b$ as different equations.
